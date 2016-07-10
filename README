@@ -1,0 +1,39 @@
+CSE 421: Project 1
+README
+Group: Dean Steuer, Kai Hsu, Mitch Taylor 
+
+
+Directory should contain four files
+(1) This README document which explains directory documents
+(2) myhttpd.c - the source code of the program. This program sets up a server and receives
+    requests for data from clients
+(3) Makefile - contains commands for compiling and running  myhttpd.c
+(4) DESIGN.txt - a design documents detailing the data structure used in the code,
+    context switch locations, how it avoids race conditions, a brief critique of the
+    design of the program, and online and offline resources used to help design
+    and build the program
+    
+The directory also contains 3 html files that clients can requests from the server. Clients can request
+a file by first connecting to the active server port and submit a request in the form Get/Head [html_file_name].
+After the queuing time has expired the server will send a response with the requested message to the
+client.
+
+Running the program:
+    Once compiled, the program can run like a UNIX command
+
+    ./myhttpd [-d][-h][-l][-p][-r][-t][-n][-s]
+
+    -d       :Set up debug mode and print results to the console. If this
+             flag is not specified it will run as a daemon process
+    -h       :print a usage message to the console
+    -l file  :this flag will log all outputs to the specified file
+             following this flag
+    -p port  :Specify the port number to listen on. If not specified, port is 8080
+             by default
+    -r dir   :Set the root directory for the server to dir
+    -t time  :Set queue time to time seconds. Default is 60 seconds
+    -n threadnum :set number of threads waiting ready in execution thread pool to threadnum
+                  Default is 4 threads
+    -s sched :Set scheduling policy, either First Come First Serve or Shortest Job First
+              FCFS by default 
+    

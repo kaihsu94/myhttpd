@@ -1,0 +1,59 @@
+CSE 421: Operating Systems
+Summer 2016
+Tefvik Kosar
+
+Project 1: Web Server Using Multithreading and Mutual Exclusion
+Design Documentation
+
+a)Group Members(3):
+  Kai Hsu - kaihsu@gmail.com
+  Mitch Taylor - mitchelt@buffalo.edu
+  Dean Steuer -deansteu@buffalo.edu
+
+b)Data Structures
+  Our team used a linked list to store data related to the message, this
+  was stored in a struct which contained information including the time of
+  arrival, message, and size of message. These messages were placed in the
+  list in the order they were received by appending the new data to the tail
+  of the list. During scheduling, depending on the type of scheduling, we either
+  remove the first element from the list for First In First Out, or find the 
+  element with the shortest message size value for the case of Shortest Job First.
+
+c)Context Switches
+  Context switches are implemented in our code through the scheduler function
+  which switches between available threads and allows them to access the shared
+  data structure when it is accessible. Writing to and reading from our list
+  structure must be protected in order to ensure data is not overwritten or
+  lost during acess. We utilize mutexes during allocation and deallocation
+  as well as signals for our individual worker threads.
+
+d)Race Conditions
+  Race conditions exists during the access of the data structure. Both writing to,
+  and reading from the list require control structures to make sure that
+  information passing to holding variables is not modified during execution by
+  another thread of execution. We put in mutex locks before adding to the queue
+  and unlock the mutex and free up access after all variables have been written in.
+  Additionally, a mutex is used when we read (and remove a message) from the
+  list. It is locked before access, then we find our desired job and retrieve the
+  content. The message is then deleted from the queue and the queue pointers are
+  reassigned where necessary. The mutex is unlocked afterwards. Without this we
+  have the possibility of more than one thread writing to critical variables for
+  output.
+
+e)Design Critique
+  The data structure used to queue jobs is a simple singly linked list. In a First
+  In First Out scheduling procedure we can simply pop the front element. However,
+  with Shortest Job First, the messages are not sorted by their size so we have
+  to iterate through the entire list each time we want to remove something from
+  the queue. Additionally, our data structure represents a severe critical resource -
+  all major operations are done here and there is potentially, a substantial amount
+  of work done in this context sensitive region. The data structure may not handle
+  all edge cases gracefully. 
+
+f)Works Cited
+  soc.c - web server code provided from class written by Ken Smith
+
+  C/C++ Socket Programming -Linuxhowtos.org
+  Singly Linked Lists in C -cprogramming.com
+  C Date and Time Functions - wikipedia.org
+   
